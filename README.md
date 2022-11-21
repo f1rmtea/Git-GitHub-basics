@@ -103,11 +103,13 @@ An example use case of this is a scenario in which an urgent bug fix is required
 ## Pushing locally managed code or files to a remote repository
 In a situation in which work that is or was being managed locally using Git has to be pushed to a remote Github repository, the following steps need to be taken.
 1. Make a new repository on your github account or choose an existing one.
+  
 2. This repo has to be set as the remote repo for the locally hosted work. This can be done with the command: 
   ```
   git remote add <give any name to the remote repo> <remote repo url>
   ```
-  We generally name the remote repo as "origin"
+&nbsp;&nbsp;&nbsp;&nbsp;We generally name the remote repo as "origin"  
+    
 3. Navigate to the main branch with the command:
 ```
 git branch -M <main branch name>
