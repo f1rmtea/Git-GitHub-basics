@@ -1,120 +1,170 @@
 # Basics of Git and GitHub
-These notes are based on a practical approach  and all the essentials that one may require for documenting, managing or collaborating on projects have been included. 
+
+These notes cover essential Git and GitHub commands for documenting, managing, and collaborating on projects.
 
 ## Terminology
-- Git: Version control/ source control system, i.e., lets us manage the changes we made to files or a code. Works locally.
-- Commits: Checkpoints or changes made to the code or one or more files.
-- Staging: Holding changes before committing.
-- Branch: Alternate version of a code. These can we worked on with or without changing the original version.
-- Merging: Synchronizing different branches.
+- **Git:** Version control/source control system, i.e., lets us manage the changes we made to files or code. Works locally.
+- **Commits:** Checkpoints or changes made to the code or one or more files.
+- **Staging:** Holding changes before committing.
+- **Branch:** Alternate version of a code. These can be worked on with or without changing the original version.
+- **Merging:** Synchronizing different branches.
 
-## Prerequisites
-- Git; can be downloaded from the [Git website](https://git-scm.com/).
-- VS code or any other IDE with similar capabilities.
-- node.js
-
-## Git 
-Git is designed to be used by multiple users. Thus, for one to get credit for the changes they make, identification is necessary. After installing git, the first thing one should do is sign in with their Github username and email address or any other ID of choice. The global variable can be used to make every project on the computer use the same name and email. This can be done using the following command.
-
-```
-git config
+## Git Basics
+### Configuration
+To identify yourself for Git to track changes, configure your username and email:
+```sh
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
 ```
 
-### Managing a folder with Git
-The first thing to be done when managing a folder with git is initialize Git in that folder using the terminal or a suitable IDE. The following command is to be used.
-```
+### Initialize a Repository
+To start managing a folder with Git:
+```sh
 git init
 ```
 
-### Branching
+## Pushing Local Code to GitHub
+1. **Create or use an existing GitHub repository.**
+2. **Set the remote repository:**
+   ```sh
+   git remote add origin <repository URL>
+   ```
+3. **Navigate to the main branch:**
+   ```sh
+   git branch -M main
+   ```
+4. **Push the code:**
+   ```sh
+   git push -u origin main
+   ```
 
-Branching is a very useful feature of Git. For example, we want to implement any feature x but do not want it to affect the rest of the code in any way, then we will write that feature in a different branch.
-A new branch can be created using this command:
+### Branching
+Branching is a very useful feature of Git. For example, if we want to implement any feature but do not want it to affect the rest of the code in any way, then we will write that feature in a different branch.
+Create a new branch:
+```sh
+git branch <branch_name>
 ```
-git branch <name>
-```
-To switch to a specified branch, we can hit the following command:
-```
+Switch to a branch:
+```sh
 git checkout <branch_name>
 ```
-To make a new branch and switch directly to it, we can just do the following.
-```
+Create and switch to a new branch:
+```sh
 git checkout -b <branch_name>
 ```
 No branch knows about or is affected by the content of other branches.
-Once the code in a branch is verified ok, it can be moved into the main or master branch. We navigate to the destination branch and hit the following command for merging two branches.
-```
+Once the code in a branch is verified as okay, it can be moved into the main or master branch. We navigate to the destination branch and hit the following command for merging two branches:
+```sh
 git merge <source_branch_name>
+```
+When multiple branches are present locally, the following command can be used to push all the branches to the remote repository:
+```sh
+git push --all origin
 ```
 
 ### Staging and Committing
-Before committing, changes need to be tracked added to the staging environment using the command:
+Stage changes:
+```sh
+git add <filename>
 ```
-git add <filename> 
-```
-All the files in the folder can be added to the staging environment by simply using the following command.
-```
+Stage all files:
+```sh
 git add .
 ```
-Once the files have been moved into staging, a commit can be registered, using the following command:
+Commit changes:
+```sh
+git commit -m "commit message"
 ```
-git commit -m '<commit_name>'
-```
-This will commit all the staged changes. The commit name needs to be passed in quotes and after the -m argument.
-To review the commit prior to making it, we can do the following.
-```
+Review commit before committing:
+```sh
 git commit --dry-run
 ```
 
-### Using ".gitignore"
-A file named ".gitignore", when present in the current working directory or repository, can be used to virtually hide files from Git. Files not supposed to be managed by Git should be named in this file. This will lead Git to ignoring these files while performing any operation.
-".gitignore" itself can be mentioned in the .gitignore file and it will hide itself.
-
-###  Miscellaneous commands
-To see the entries and commits that have been made so far, the following command can be used:
+### Rolling Back Changes
+#### Revert Unstaged Changes
+When files haven't been staged:
+```sh
+git checkout <filename>
 ```
+This will revert a file to its previous condition.
+
+#### Revert Staged Changes
+When files have been staged but not committed:
+```sh
+git restore --staged <filename>
+```
+
+#### Revert Committed Changes
+When files have been committed:
+```sh
+git revert HEAD
+```
+
+#### Hard Reset to a Previous Commit
+Revert and not store any history:
+```sh
+git reset --hard <target commit ID>
+```
+All the history after this commit will be removed.
+
+### Viewing Differences
+Check the difference between the current commit and the one that is about to happen (files are in staging):
+```sh
+git diff --cached
+```
+Check the difference between two commits:
+```sh
+git diff <commit1 name> <commit2 name>
+```
+
+### Using `.gitignore`
+Create a `.gitignore` file to exclude files from Git:
+```
+# Example .gitignore entries
+node_modules/
+*.log
+```
+Include `.gitignore` itself to hide it:
+```
+.gitignore
+```
+
+### Git SSH Login to Remote Repository
+By default, Git login is based on username and password, but SSH-based authentication can also be used. This is done through SSH keys, which need to be generated beforehand with the command:
+```sh
+ssh-keygen
+```
+To get the public key:
+1. Run:
+   ```sh
+   cat ~/.ssh/id_rsa.pub
+   ```
+2. Copy the output and add it to your GitHub account from account settings under "SSH and GPG keys."
+
+Keys will be compared, and if the keys match, authentication will be successful. SSH login is considered to be safer.
+
+### Miscellaneous Commands
+View commit history:
+```sh
 git log
 ```
-
-This provides the following information about a commit:
-- Hash: Unique ID
-- Which branch the head is currently in
-- Author name and email address
-- Date of commit
-- git name
-
-The changes/modifications that have been made so far in the folder or the repository can be fetched with the following command:
-```
+Check the status of changes:
+```sh
 git status
 ```
-If a file has been tracked previously but has then been modified, git status will show that it has been modified. If any files have been newly added to the folder or the repository, then git status will show them as untracked files.
-
+Checkout a specific commit:
+```sh
+git checkout <commit_hash>
 ```
-git checkout <hash>
-```
-This command can be used to go to that particular commit, make changes, look around, whatever.
-
-Sometimes, one may need to temporarily shelf (or stash) changes made to the working copy and switch to working on something else, and then come back to resume and re-apply their previous work. The following command enables one to do just that.
-```
+Stash changes temporarily:
+```sh
 git stash
 ```
-An example use case of this is a scenario in which an urgent bug fix is required in a different branch than what is currently being worked on. Current work can be stashed for the time being, and resumed after fixing the said bug.
-
-## Pushing locally managed code or files to a remote repository
-In a situation in which work that is or was being managed locally using Git has to be pushed to a remote Github repository, the following steps need to be taken.
-1. Make a new repository on your github account or choose an existing one.
-  
-2. This repo has to be set as the remote repo for the locally hosted work. This can be done with the command: 
-  ```
-  git remote add <give any name to the remote repo> <remote repo url>
-  ```
-&nbsp;&nbsp;&nbsp;&nbsp;We generally name the remote repo as "origin"  
-    
-3. Navigate to the main branch with the command:
+Show changes in a commit:
+```sh
+git show <commit_id>
 ```
-git branch -M <main branch name>
-```
-4. Push the code to the repo with the command:
-```
-git push -u origin master 
+Remove a file from the index and delete it:
+```sh
+git rm <filename>
 ```
