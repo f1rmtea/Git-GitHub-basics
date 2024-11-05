@@ -8,6 +8,7 @@ These notes cover essential Git and GitHub commands for documenting, managing, a
 - **Staging:** Holding changes before committing.
 - **Branch:** Alternate version of code that can be worked on without affecting the original version.
 - **Merging:** Combining different branches into one.
+- **Rebasing:** A way to integrate changes from one branch onto another while maintaining a linear history.
 
 ## Git Basics
 ### Configuration
@@ -22,21 +23,6 @@ Start tracking a folder with Git:
 ```sh
 git init
 ```
-
-## Pushing Local Code to GitHub
-1. **Create or use an existing GitHub repository.**
-2. **Set the remote repository:**
-   ```sh
-   git remote add origin <repository URL>
-   ```
-3. **Switch to the main branch:**
-   ```sh
-   git branch -M main
-   ```
-4. **Push the code:**
-   ```sh
-   git push -u origin main
-   ```
 
 ### Branching
 Branches allow development without affecting other versions of the code. For instance, you can implement a feature in a separate branch and merge it once verified.
@@ -61,6 +47,44 @@ Branches allow development without affecting other versions of the code. For ins
   ```sh
   git push --all origin
   ```
+
+### Rebasing
+Rebasing is used to integrate changes from one branch (e.g., `main`) onto another branch (e.g., `feature-branch`) and place all your changes on top of the latest branch history. This keeps a linear project history, avoiding unnecessary merge commits.
+
+- **Basic Rebase**:
+  1. Switch to your feature branch:
+     ```sh
+     git checkout <feature-branch>
+     ```
+  2. Rebase onto the latest `main` branch:
+     ```sh
+     git rebase main
+     ```
+  3. If conflicts arise, resolve them, mark as resolved:
+     ```sh
+     git add <filename>
+     git rebase --continue
+     ```
+- **Push after Rebase**:
+  Since rebasing rewrites history, force-push your changes:
+  ```sh
+  git push --force
+  ```
+
+## Pushing Local Code to GitHub
+1. **Create or use an existing GitHub repository.**
+2. **Set the remote repository:**
+   ```sh
+   git remote add origin <repository URL>
+   ```
+3. **Switch to the main branch:**
+   ```sh
+   git branch -M main
+   ```
+4. **Push the code:**
+   ```sh
+   git push -u origin main
+   ```
 
 ### Staging and Committing
 - **Stage changes**:
