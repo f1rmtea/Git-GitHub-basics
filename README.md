@@ -51,25 +51,42 @@ Branches allow development without affecting other versions of the code. For ins
 ### Rebasing
 Rebasing is used to integrate changes from one branch (e.g., `main`) onto another branch (e.g., `feature-branch`) and place all your changes on top of the latest branch history. This keeps a linear project history, avoiding unnecessary merge commits.
 
-- **Basic Rebase**:
-  1. Switch to your feature branch:
-     ```sh
-     git checkout <feature-branch>
-     ```
-  2. Rebase onto the latest `main` branch:
-     ```sh
-     git rebase main
-     ```
-  3. If conflicts arise, resolve them, mark as resolved:
-     ```sh
-     git add <filename>
+1. **Switch to your feature branch**:
+   ```bash
+   git checkout <your-feature-branch>
+   ```
+
+2. **Fetch the latest changes from the remote repository**:
+   ```bash
+   git fetch origin
+   ```
+
+3. **Rebase your feature branch onto the latest `master` branch**:
+   ```bash
+   git rebase origin/master
+   ```
+
+   This command will:
+   - Apply any new commits from `origin/master` that your feature branch doesn’t yet have.
+   - Place your commits on top of these new `master` commits in the commit history.
+
+4. **Resolve any conflicts if they arise**:
+   - If conflicts occur during the rebase, Git will pause and give you the opportunity to resolve them.
+   - Use `git status` to identify conflicted files and manually fix each one.
+   - After resolving, use `git add <file>` to mark them as resolved, and then continue the rebase with:
+     ```bash
      git rebase --continue
      ```
-- **Push after Rebase**:
-  Since rebasing rewrites history, force-push your changes:
-  ```sh
-  git push --force
-  ```
+
+5. **Force-push the rebased branch back to the remote**:
+   Since you’ve rewritten history, you’ll need to force-push:
+   ```bash
+   git push origin <your-feature-branch> --force
+   ```
+
+   ⚠️ **Note**: Only force-push if you’re sure it won’t disrupt other collaborators. 
+
+This will ensure that your feature branch is rebased with all the latest commits from `master`, and your commits are on top of the latest `master` branch.
 
 ## Pushing Local Code to GitHub
 1. **Create or use an existing GitHub repository.**
