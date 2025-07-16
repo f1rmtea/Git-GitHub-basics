@@ -49,44 +49,80 @@ Branches allow development without affecting other versions of the code. For ins
   ```
 
 ### Rebasing
+
 Rebasing is used to integrate changes from one branch (e.g., `main`) onto another branch (e.g., `feature-branch`) and place all your changes on top of the latest branch history. This keeps a linear project history, avoiding unnecessary merge commits.
 
 1. **Switch to your feature branch**:
+
    ```bash
    git checkout <your-feature-branch>
    ```
 
 2. **Fetch the latest changes from the remote repository**:
+
    ```bash
    git fetch origin
    ```
 
 3. **Rebase your feature branch onto the latest `master` branch**:
+
    ```bash
    git rebase origin/master
    ```
 
    This command will:
-   - Apply any new commits from `origin/master` that your feature branch doesn’t yet have.
-   - Place your commits on top of these new `master` commits in the commit history.
+
+   * Apply any new commits from `origin/master` that your feature branch doesn’t yet have.
+   * Place your commits on top of these new `master` commits in the commit history.
 
 4. **Resolve any conflicts if they arise**:
-   - If conflicts occur during the rebase, Git will pause and give you the opportunity to resolve them.
-   - Use `git status` to identify conflicted files and manually fix each one.
-   - After resolving, use `git add <file>` to mark them as resolved, and then continue the rebase with:
+
+   * If conflicts occur during the rebase, Git will pause and give you the opportunity to resolve them.
+   * Use `git status` to identify conflicted files and manually fix each one.
+   * After resolving, use `git add <file>` to mark them as resolved, and then continue the rebase with:
+
      ```bash
      git rebase --continue
      ```
 
 5. **Force-push the rebased branch back to the remote**:
-   Since you’ve rewritten history, you’ll need to force-push:
+   Since you've updated your local commit layout, you’ll need to force-push:
+
    ```bash
    git push origin <your-feature-branch> --force
    ```
 
-   ⚠️ **Note**: Only force-push if you’re sure it won’t disrupt other collaborators. 
+   ⚠️ **Note**: Only force-push if you’re sure it won’t disrupt other collaborators.
 
-This will ensure that your feature branch is rebased with all the latest commits from `master`, and your commits are on top of the latest `master` branch.
+This ensures that your feature branch is based on the latest `master`, and your changes appear cleanly on top.
+
+### Squashing commits into one
+
+Sometimes, especially after you've already pushed changes to the remote and are preparing to merge a pull request, it's useful to combine all your feature branch commits into a single commit. This keeps the commit history focused and easy to follow.
+
+1. **Start an interactive rebase**:
+
+   ```bash
+   git rebase -i origin/master
+   ```
+
+2. **In the editor that appears**, change all but the first `pick` to `squash` (or just `s`). Example:
+
+   ```
+   pick 123abc First commit
+   squash 456def Fix A
+   squash 789ghi Refactor
+   ```
+
+3. **Edit the final commit message** if prompted, then save and close.
+
+4. **Push your updated branch to the remote**:
+
+   ```bash
+   git push origin <your-feature-branch> --force
+   ```
+
+This can be used to clean up your branch before review or merging, ensuring your contribution is easy to read and review.
 
 ## Pushing Local Code to GitHub
 1. **Create or use an existing GitHub repository.**
