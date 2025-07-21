@@ -124,6 +124,62 @@ Sometimes, especially after you've already pushed changes to the remote and are 
 
 This can be used to clean up your branch before review or merging, ensuring your contribution is easy to read and review.
 
+### Custom squash example with grouped commits
+
+Sometimes, instead of squashing all your commits into one, you may want to **group related commits together** and give each group a meaningful message. This is useful for keeping the history clean while still showing logical steps in your work.
+
+1. Start an interactive rebase, looking back far enough to include all the commits you want to reorganize:
+
+   ```bash
+   git rebase -i HEAD~10
+   ```
+
+2. In the editor that opens, you'll see a list like this:
+
+   ```
+   pick a1 First commit
+   pick b2 Add feature A
+   pick c3 Refactor feature A
+   pick d4 Fix bug in feature A
+   pick e5 Add feature B
+   pick f6 Minor tweaks to feature B
+   pick g7 Prepare for production
+   pick h8 Fix logging
+   pick i9 Adjust Dockerfile
+   pick j0 Final cleanup
+   ```
+
+3. Modify the list to group and squash related commits:
+
+   ```
+   pick a1 First commit
+
+   pick b2 Add feature A
+   squash c3 Refactor feature A
+   squash d4 Fix bug in feature A
+   # -> Final message: Implement and refine feature A
+
+   pick e5 Add feature B
+   squash f6 Minor tweaks to feature B
+   # -> Final message: Add feature B
+
+   pick g7 Prepare for production
+   squash h8 Fix logging
+   squash i9 Adjust Dockerfile
+   squash j0 Final cleanup
+   # -> Final message: Production readiness and cleanup
+   ```
+
+4. When prompted, replace each group’s combined commit message with a clear summary (as shown in the comments above).
+
+5. After resolving any conflicts, complete the rebase and update the remote branch:
+
+   ```bash
+   git push origin <your-feature-branch> --force
+   ```
+
+This technique is helpful when you want to preserve meaningful history but reduce noise in your commits.
+
 ## Pushing Local Code to GitHub
 1. **Create or use an existing GitHub repository.**
 2. **Set the remote repository:**
